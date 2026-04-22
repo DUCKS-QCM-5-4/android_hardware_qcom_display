@@ -31,7 +31,11 @@
 #define __GR_ADRENO_INFO_H__
 
 #ifndef QMAA
+#ifdef MMM_NV12_ALIGN
+#include <display/media/mmm_color_fmt_msmnile.h>
+#else
 #include <display/media/mmm_color_fmt.h>
+#endif
 #endif
 
 #include "gr_utils.h"

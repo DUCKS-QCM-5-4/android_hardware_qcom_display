@@ -28,7 +28,11 @@
  */
 
 #ifndef QMAA
+#ifdef MMM_NV12_ALIGN
+#include <display/media/mmm_color_fmt_msmnile.h>
+#else
 #include <display/media/mmm_color_fmt.h>
+#endif
 #endif
 
 #include <drm/drm_fourcc.h>
