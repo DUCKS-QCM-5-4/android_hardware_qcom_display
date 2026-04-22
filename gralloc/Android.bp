@@ -28,6 +28,9 @@ cc_library_shared {
     ] + select(soong_config_variable("qtidisplay", "target_no_camera_custom_format"), {
         "true": ["-DNO_CAMERA_CUSTOM_FORMAT"],
         default: [],
+    }) + select(soong_config_variable("ANDROID", "target_board_platform"), {
+        "msmnile": ["-DMMM_NV12_ALIGN"],
+        default: [],
     }),
     srcs: [
         "gr_utils.cpp",
