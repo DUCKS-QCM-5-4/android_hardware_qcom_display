@@ -301,8 +301,8 @@ HWC2::Error HWCDisplayBuiltIn::Validate(uint32_t *out_num_types, uint32_t *out_n
     readback_configured_ = !layer_stack_.flags.secure_present;
     if (readback_configured_) {
       uint32_t cwb_with_pu_supported = 0;
-      display_intf_->IsSupportedOnDisplay(kCwbCrop, &cwb_with_pu_supported);
-      if (!cwb_with_pu_supported) {  // If CWB ROI isn't supported, then go for full frame update.
+      display_intf_->IsSupportedOnDisplay(kCwbWithPartialUpdate, &cwb_with_pu_supported);
+      if (!cwb_with_pu_supported) {
         DisablePartialUpdateOneFrame();
       }
       layer_stack_.output_buffer = &output_buffer_;
@@ -708,12 +708,6 @@ HWC2::Error HWCDisplayBuiltIn::SetReadbackBuffer(const native_handle_t *buffer,
     return HWC2::Error::BadParameter;
   }
 
-  if ((client == kCWBClientExternal) && ((handle->flags &
-      private_handle_t::PRIV_FLAGS_UBWC_ALIGNED) || gralloc::IsUBwcFormat(handle->format))) {
-    DLOGE("UBWC formats not supported for CWB");
-    return HWC2::Error::Unsupported;
-  }
-
   // Configure the output buffer as Readback buffer
   output_buffer_.width = UINT32(handle->width);
   output_buffer_.height = UINT32(handle->height);
@@ -779,7 +773,7 @@ HWC2::Error HWCDisplayBuiltIn::GetReadbackBufferFence(shared_ptr<Fence> *release
     status = HWC2::Error::Unsupported;
   }
 
-  cwb_config_ = {};
+  cwb_config_.tap_point = CwbTapPoint::kLmTapPoint;
   readback_buffer_queued_ = false;
   readback_configured_ = false;
   output_buffer_ = {};
@@ -817,7 +811,7 @@ DisplayError HWCDisplayBuiltIn::TeardownConcurrentWriteback(bool *needs_refresh)
     frame_capture_status_ = 0;
   }
   readback_buffer_queued_ = false;
-  cwb_config_ = {};
+  cwb_config_.tap_point = CwbTapPoint::kLmTapPoint;
   readback_configured_ = false;
   output_buffer_ = {};
   cwb_client_ = kCWBClientNone;
@@ -1088,7 +1082,7 @@ void HWCDisplayBuiltIn::HandleFrameCapture() {
 
   frame_capture_buffer_queued_ = false;
   readback_buffer_queued_ = false;
-  cwb_config_ = {};
+  cwb_config_.tap_point = CwbTapPoint::kLmTapPoint;
   readback_configured_ = false;
   output_buffer_ = {};
   cwb_client_ = kCWBClientNone;
@@ -1123,7 +1117,7 @@ void HWCDisplayBuiltIn::HandleFrameDump() {
       }
 
       readback_buffer_queued_ = false;
-      cwb_config_ = {};
+      cwb_config_.tap_point = CwbTapPoint::kLmTapPoint;
       readback_configured_ = false;
 
       output_buffer_ = {};
