@@ -2669,7 +2669,6 @@ void HWDeviceDRM::GetTopologySplit(HWTopology hw_topology, uint32_t *split_numbe
     case kQuadLMMerge:
     case kQuadLMDSCMerge:
     case kQuadLMMergeDSC:
-    case kQuadLMDSC4HSMerge:
       *split_number = 4;
       break;
     case kPPSplit:
