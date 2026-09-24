@@ -1065,8 +1065,6 @@ class DisplayInterface {
   */
   virtual DisplayError NotifyDisplayCalibrationMode(bool in_calibration) = 0;
 
-  virtual DisplayError TeardownConcurrentWriteback(void) = 0;
-
  protected:
   virtual ~DisplayInterface() { }
 };

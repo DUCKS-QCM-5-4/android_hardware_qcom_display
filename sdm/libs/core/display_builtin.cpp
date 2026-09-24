@@ -1785,9 +1785,4 @@ void DisplayBuiltIn::SendDisplayConfigs() {
   }
 }
 
-DisplayError DisplayBuiltIn::TeardownConcurrentWriteback() {
-  lock_guard<recursive_mutex> obj(recursive_mutex_);
-  return hw_intf_->TeardownConcurrentWriteback();
-}
-
 }  // namespace sdm
