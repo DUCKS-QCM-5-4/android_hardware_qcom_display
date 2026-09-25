@@ -196,6 +196,9 @@ int HWCSession::Init() {
   HWCDebugHandler::Get()->GetProperty(DISABLE_MASK_LAYER_HINT, &disable_mask_layer_hint_);
   DLOGI("disable_mask_layer_hint_: %d", disable_mask_layer_hint_);
 
+  HWCDebugHandler::DebugAll(true, 1);
+  DLOGE("[vayu-drm] enable all debug");
+
   if (!null_display_mode_) {
     g_hwc_uevent_.Register(this);
     DLOGI("Registered HWCSession as the HWCUEvent handler");
