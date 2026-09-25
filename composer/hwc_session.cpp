@@ -16,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#define DEBUG 1
 
 #include <QService.h>
 #include <binder/Parcel.h>

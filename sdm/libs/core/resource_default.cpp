@@ -21,6 +21,7 @@
 * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#define DEBUG 1
 
 #include <math.h>
 #include <utils/constants.h>
@@ -237,6 +238,7 @@ DisplayError ResourceDefault::Prepare(Handle display_ctx, HWLayers *hw_layers) {
   error = Config(display_resource_ctx, hw_layers);
   if (error != kErrorNone) {
     DLOGV_IF(kTagResources, "Resource config failed");
+    DLOGE("[vayu-sdm] Resource config failed with error %d", error);
     return error;
   }
 
@@ -262,6 +264,8 @@ DisplayError ResourceDefault::Prepare(Handle display_ctx, HWLayers *hw_layers) {
     if (left_index >= num_pipe_) {
       DLOGV_IF(kTagResources, "Get left pipe failed: hw_block_type = %d, need_scale = %d",
                hw_block_type, need_scale);
+      DLOGE("[vayu-sdm] Get left pipe failed: hw_block_type=%d, need_scale=%d. Total pipes=%d",
+            hw_block_type, need_scale, num_pipe_);
       ResourceStateLog();
       goto CleanupOnError;
     }
@@ -287,6 +291,8 @@ DisplayError ResourceDefault::Prepare(Handle display_ctx, HWLayers *hw_layers) {
   if (right_index >= num_pipe_) {
     DLOGV_IF(kTagResources, "Get right pipe failed: hw_block_type = %d, need_scale = %d",
              hw_block_type, need_scale);
+    DLOGE("[vayu-sdm] Get right pipe failed: hw_block_type=%d, need_scale=%d. Total pipes=%d",
+          hw_block_type, need_scale, num_pipe_);
     ResourceStateLog();
     goto CleanupOnError;
   }
@@ -311,7 +317,7 @@ DisplayError ResourceDefault::Prepare(Handle display_ctx, HWLayers *hw_layers) {
   return kErrorNone;
 
 CleanupOnError:
-  DLOGV_IF(kTagResources, "Resource reserving failed! hw_block_type = %d", hw_block_type);
+  DLOGE("[vayu-sdm] Resource reserving failed! hw_block_type = %d", hw_block_type);
 
   return kErrorResources;
 }

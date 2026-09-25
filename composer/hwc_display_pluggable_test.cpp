@@ -26,6 +26,7 @@
 * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#define DEBUG 1
 
 #include <cutils/properties.h>
 #include <sys/mman.h>
